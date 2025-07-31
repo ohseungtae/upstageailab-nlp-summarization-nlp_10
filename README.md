@@ -9,12 +9,11 @@ Upstage NLP competition dataset(dialogue summarization)
 
 ```bash
 # clone project
-git clone https://github.com/DimensionSTP/upstage-nlp-baseline.git
-cd upstage-nlp-baseline
+git clone https://github.com/ohseungtae/upstageailab-nlp-summarization-nlp_10.git
+cd upstageailab-nlp-summarization-nlp_10
 
-# [OPTIONAL] create conda environment
-conda create -n myenv python=3.8
-conda activate myenv
+
+
 
 # install requirements
 pip install -r requirements.txt
