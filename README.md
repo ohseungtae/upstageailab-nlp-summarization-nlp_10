@@ -1,92 +1,55 @@
-# Title (Please modify the title)
-## Team
+# Summary DL pipeline for NLP competition
 
-| ![박패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![이패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![최패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![김패캠](https://avatars.githubusercontent.com/u/156163982?v=4) | ![오패캠](https://avatars.githubusercontent.com/u/156163982?v=4) |
-| :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------: |
-|            [박패캠](https://github.com/UpstageAILab)             |            [이패캠](https://github.com/UpstageAILab)             |            [최패캠](https://github.com/UpstageAILab)             |            [김패캠](https://github.com/UpstageAILab)             |            [오패캠](https://github.com/UpstageAILab)             |
-|                            팀장, 담당 역할                             |                            담당 역할                             |                            담당 역할                             |                            담당 역할                             |                            담당 역할                             |
+## For Upstage NLP competition
 
-## 0. Overview
-### Environment
-- _Write Development environment_
+### Dataset
+Upstage NLP competition dataset(dialogue summarization)
 
-### Requirements
-- _Write Requirements_
+### Quick setup
 
-## 1. Competiton Info
+```bash
+# clone project
+git clone https://github.com/ohseungtae/upstageailab-nlp-summarization-nlp_10.git
+cd upstageailab-nlp-summarization-nlp_10
 
-### Overview
 
-- _Write competition information_
 
-### Timeline
 
-- ex) January 10, 2024 - Start Date
-- ex) February 10, 2024 - Final submission deadline
-
-## 2. Components
-
-### Directory
-
-- _Insert your directory structure_
-
-e.g.
-```
-├── code
-│   ├── jupyter_notebooks
-│   │   └── model_train.ipynb
-│   └── train.py
-├── docs
-│   ├── pdf
-│   │   └── (Template) [패스트캠퍼스] Upstage AI Lab 1기_그룹 스터디 .pptx
-│   └── paper
-└── input
-    └── data
-        ├── eval
-        └── train
+# install requirements
+pip install -r requirements.txt
 ```
 
-## 3. Data descrption
+### Model Hyper-Parameters Tuning
 
-### Dataset overview
+* end-to-end
+```shell
+python main.py mode=tune is_tuned=untuned num_trials={num_trials}
+```
 
-- _Explain using data_
+### Training
 
-### EDA
+* end-to-end
+```shell
+python main.py mode=train is_tuned={tuned or untuned} num_trials={num_trials}
+```
 
-- _Describe your EDA process and step-by-step conclusion_
+### Test
 
-### Data Processing
+* end-to-end
+```shell
+python main.py mode=test is_tuned={tuned or untuned} num_trials={num_trials} epoch={ckpt epoch}
+```
 
-- _Describe data processing process (e.g. Data Labeling, Data Cleaning..)_
+### Prediction
 
-## 4. Modeling
+* end-to-end
+```shell
+python main.py mode=predict is_tuned={tuned or untuned} num_trials={num_trials} epoch={ckpt epoch}
+```
 
-### Model descrition
 
-- _Write model information and why your select this model_
+__If you want to change main config, use --config-name={config_name}.__
 
-### Modeling Process
+__Also, you can use --multirun option.__
 
-- _Write model train and test process with capture_
-
-## 5. Result
-
-### Leader Board
-
-- _Insert Leader Board Capture_
-- _Write rank and score_
-
-### Presentation
-
-- _Insert your presentaion file(pdf) link_
-
-## etc
-
-### Meeting Log
-
-- _Insert your meeting log link like Notion or Google Docs_
-
-### Reference
-
-- _Insert related reference_
+__You can set additional arguments through the command line.__
