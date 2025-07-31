@@ -1,0 +1,92 @@
+# @package _global_
+defaults:
+  - dataset: huggingface_upstagedialogues_dataset
+  - architecture: huggingface_architecture
+  - tuner: huggingface_tuner
+  - logger: wandb
+  - hydra: hydra
+  - callbacks: callbacks
+  - trainer: trainer
+
+package_name: upstage-nlp-baseline
+project_dir: /data/ephemeral/${package_name}
+connected_dir: /data/ephemeral/${package_name}
+
+seed: 2024
+
+split:
+  train: train
+  val: val
+  test: test
+  predict: predict
+
+batch_size: 24
+
+is_preprocessed: True
+target_column_name: summary
+upload_user: MLP-KTLim
+model_type: llama-3-Korean-Bllossom-8B
+pretrained_model_name: ${upload_user}/${model_type}
+data_max_length: 1024
+target_max_length: 256
+target_min_length: 16
+
+quantization_type: origin
+quantization_config:
+  load_in_4bit: True
+  bnb_4bit_quant_type: nf4
+  bnb_4bit_use_double_quant: True
+  bnb_4bit_compute_dtype: bfloat16
+peft_type: origin
+peft_config:
+  r: 8
+  lora_alpha: 16
+  target_modules: all-linear
+  lora_dropout: 0.05
+  bias: none
+  task_type: CAUSAL_LM
+  inference_mode: False
+
+lr: 0.00005
+t_max: 50
+eta_min: 0.000001
+options:
+  no_repeat_ngram_size: 2
+
+monitor: val_loss
+tracking_direction: min
+patience: 3
+min_delta: 0
+
+devices: 1
+accelerator: gpu
+strategy: deepspeed_stage_2
+log_every_n_steps: 10
+precision: bf16
+accumulate_grad_batches: 1
+epoch: 100
+
+model_name: HuggingFace
+dataset_name: UpStageDialogues
+mode: train
+
+is_tuned: tuned
+num_trials: 3
+hparams_save_path: ${connected_dir}/hparams/${model_name}/${dataset_name}/${num_trials}_trials
+tuned_hparams_path: ${hparams_save_path}/best_params.json
+
+project_name: ${model_name}-${dataset_name}-${mode}
+total_batch_size: bs=${batch_size}x${devices}x${accumulate_grad_batches}
+length_info: data_max_length=${data_max_length}-target_max_length=${target_max_length}
+save_detail: ${upload_user}_${model_type}-quantization_type=${quantization_type}-peft_type=${peft_type}-${length_info}-precision=${precision}-${total_batch_size}
+resumed_step: 0
+ckpt_path: ${callbacks.model_checkpoint.dirpath}/epoch=${epoch}.ckpt
+
+submission_file_name: test
+per_device_save_path: ${connected_dir}/sharded_results/${save_detail}
+logit_name: ${save_detail}-epoch=${epoch}
+pred_name: ${save_detail}-epoch=${epoch}
+submission_name: ${save_detail}-epoch=${epoch}
+
+run_name: ${project_name}
+work_dir: ${hydra:runtime.cwd}
