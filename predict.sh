@@ -1,0 +1,2 @@
+python main.py mode=predict is_tuned=untuned quantization_type=quantization peft_type=lora batch_size=4 epoch={epoch}
+python merge_predictions.py is_tuned=untuned quantization_type=quantization peft_type=lora batch_size=4 epoch={epoch}
