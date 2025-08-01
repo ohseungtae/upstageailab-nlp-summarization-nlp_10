@@ -7,12 +7,13 @@ defaults:
   - hydra: hydra
   - callbacks: callbacks
   - trainer: trainer
+  - deepspeed: offload        # 추가!!
+  
+package_name: nlp-STP
+project_dir: /data/ephemeral/home/${package_name}
+connected_dir: /data/ephemeral/home/${package_name}
 
-package_name: upstage-nlp-baseline
-project_dir: /data/ephemeral/${package_name}
-connected_dir: /data/ephemeral/${package_name}
-
-seed: 2024
+seed: 2025
 
 split:
   train: train
@@ -20,15 +21,19 @@ split:
   test: test
   predict: predict
 
-batch_size: 24
+batch_size: 1
 
 is_preprocessed: True
 target_column_name: summary
-upload_user: MLP-KTLim
-model_type: llama-3-Korean-Bllossom-8B
+upload_user: google
+model_type: gemma-2-2b
 pretrained_model_name: ${upload_user}/${model_type}
-data_max_length: 1024
-target_max_length: 256
+#data_max_length: 1024
+#data_max_length: 512
+data_max_length: 256
+#target_max_length: 256
+#target_max_length: 128
+target_max_length: 64
 target_min_length: 16
 
 quantization_type: origin
@@ -60,6 +65,7 @@ min_delta: 0
 
 devices: 1
 accelerator: gpu
+#strategy: deepspeed
 strategy: deepspeed_stage_2
 log_every_n_steps: 10
 precision: bf16
