@@ -1,0 +1,10 @@
+# configs/deepspeed/offload.yaml
+zero_optimization:
+  stage: 2
+  offload_optimizer:
+    device: cpu
+    pin_memory: true
+# 필요 시 gradient offload도 추가 가능
+offload_param:
+  device: cpu
+  pin_memory: true
